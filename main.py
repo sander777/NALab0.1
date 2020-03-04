@@ -48,8 +48,12 @@ def newton(f, f_prime, a, b, x_, f_second, eps=1e-7, imax=1e6, ):
 
         q = (M2 * abs(x_ - x0)) / (2 * m1)
         print("q = {}".format(q))
+        if q >= 1:
+            print("q >= 1\nInput new [a, b] and x0")
+            a, b = float(input("a: ")), float(input("b: ")) 
+            continue
 
-        n_ = floor(log2(1 + log(eps/(b - a)) / log(q))) + 1
+        n_ = floor(log2(1 + log(eps / (b - a)) / log(q))) + 1
         print("n >= {}".format(n_))
         print("Is it OK (1 - yes, 0 - no)")
         if int(input()) == 1:
@@ -86,8 +90,7 @@ def relaxetion(f, f_prime, a, b, eps=1e-7, imax=1e6):
     return x
 
 print("Newton [a, b]")
-a = float(input("a: "))
-b = float(input("b: "))
+a, b = float(input("a: ")), float(input("b: ")) 
 newton(f, f_prime, a, b, 1.132997565885065267, f_second)
 print("Relaxetion\n")
 relaxetion(f, f_prime, a, b)
