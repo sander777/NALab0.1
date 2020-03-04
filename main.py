@@ -36,7 +36,7 @@ def max_min_on_interval(a, b, f):
 
     return max, min
 
-def newton(f, f_prime, a, b, eps=1e-7, imax=1e6, x_=False, f_second=False):
+def newton(f, f_prime, a, b, x_, f_second, eps=1e-7, imax=1e6, ):
     x0 = 0
     while True:
         x0 = float(input("Input x0: "))
@@ -66,7 +66,14 @@ def newton(f, f_prime, a, b, eps=1e-7, imax=1e6, x_=False, f_second=False):
     print("\nAnswer = " + str(x) + ";\t\tInterations - " + str(i))
     return x
 
-def relaxetion(f, f_prime, x0, M, m, eps=1e-7, imax=1e6):
+def relaxetion(f, f_prime, a, b, eps=1e-7, imax=1e6):
+    while True:
+        x0 = float(input("Input x0: "))
+        if x0 < a or x0 > b:
+            print("Out of range")
+            continue
+        break
+    M, m = max_min_on_interval(a, b, lambda x: abs(f_prime(x)))
     x, x_prev, tau, i = x0, x0 + 2 * eps, 2 / (M + m),1
     print("|{:>16}|{:>16}|{:>16}|{:>16}|".format('i', 'x', 'f(x)', 'f\'(x)'))
     print("---------------------------------------------------------------------")
@@ -81,8 +88,6 @@ def relaxetion(f, f_prime, x0, M, m, eps=1e-7, imax=1e6):
 print("Newton [a, b]")
 a = float(input("a: "))
 b = float(input("b: "))
-newton(f, f_prime, a, b, x_ = 1.132997565885065267, f_second=f_second)
+newton(f, f_prime, a, b, 1.132997565885065267, f_second)
 print("Relaxetion\n")
-print("f(x*) = 0 and x* є [a, b]")
-M, m = float(input("Max(|f'(x)|) x є (a, b): ")), float(input("Min(|f'(x)|) x є (a, b): "))
-relaxetion(f, f_prime, x0, M, m)
+relaxetion(f, f_prime, a, b)
