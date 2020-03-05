@@ -19,9 +19,11 @@ ax.axis('equal')
 ax.set(xlim=(-10, 10), ylim=(-10, 10))
 fr = 10
 
-ax.plot(np.arange(-fr, fr, 0.01),list(map(f, np.arange(-fr, fr, 0.01))))
-ax.plot(np.arange(-fr, fr, 0.01),list(map(f_prime, np.arange(-fr, fr, 0.01))))
 ax.plot([-100, 100],[0, 0])
+ax.plot([0, 0], [-100, 100])
+ax.plot(np.arange(-fr, fr, 0.01), list(map(f, np.arange(-fr, fr, 0.01))))
+ax.plot(np.arange(-fr, fr, 0.01), list(map(f_prime, np.arange(-fr, fr, 0.01))))
+
 
 plt.ion()
 plt.show()
@@ -71,13 +73,21 @@ def newton(f, f_prime, a, b, x_, f_second, eps=1e-7, imax=1e6, ):
     return x
 
 def relaxetion(f, f_prime, a, b, eps=1e-7, imax=1e6):
+    M, m, tau = 0, 0, 0
     while True:
         x0 = float(input("Input x0: "))
         if x0 < a or x0 > b:
             print("Out of range")
             continue
+        M, m, = max_min_on_interval(a, b, lambda x: abs(f_prime(x)))
+        q = (M - m) / (M + m)
+        n_ = floor( log(eps) * (1 - q)   /   (b - a)   /   (log(q))) + 1
+        print("q = {}\nn >= {}\nIs it OK(1 - yes, 0 - no)".format(q, n_))
+        if(input() == '0'):
+            a, b = float(input("a: ")), float(input("b:"))
+            continue
         break
-    M, m = max_min_on_interval(a, b, lambda x: abs(f_prime(x)))
+    
     x, x_prev, tau, i = x0, x0 + 2 * eps, 2 / (M + m), 1
     print("|{:>16}|{:>16}|{:>16}|{:>16}|".format('i', 'x', 'f(x)', 'f\'(x)'))
     print("---------------------------------------------------------------------")
