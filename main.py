@@ -28,10 +28,10 @@ plt.show()
 
 def max_min_on_interval(a, b, f):
     min, max = f(a), f(b)
-    for i in np.arange(a, b, (a-b) / 100):
-        if min < f(i):
+    for i in np.arange(a, b, (b-a) / 100):
+        if min > f(i):
             min = f(i)
-        if max > f(i):
+        if max < f(i):
             max = f(i)
 
     return max, min
@@ -78,7 +78,7 @@ def relaxetion(f, f_prime, a, b, eps=1e-7, imax=1e6):
             continue
         break
     M, m = max_min_on_interval(a, b, lambda x: abs(f_prime(x)))
-    x, x_prev, tau, i = x0, x0 + 2 * eps, 2 / (M + m),1
+    x, x_prev, tau, i = x0, x0 + 2 * eps, 2 / (M + m), 1
     print("|{:>16}|{:>16}|{:>16}|{:>16}|".format('i', 'x', 'f(x)', 'f\'(x)'))
     print("---------------------------------------------------------------------")
     while abs(x - x_prev) >= eps and i < imax:
